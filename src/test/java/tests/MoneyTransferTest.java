@@ -11,6 +11,7 @@ import pages.LoginPage;
 import pages.TransferOfFundPage;
 
 import static com.codeborne.selenide.Selenide.open;
+import static data.DataHelper.getFirstCardInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MoneyTransferTest {
@@ -25,91 +26,84 @@ public class MoneyTransferTest {
         var verificationPage = loginPage.validLogin(authInfo);
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         verificationPage.validVerify(verificationCode);
+
+
     }
 
     @Test
     void shouldTransferMoneyInFirstCard() {
         var dashBoardPage = new DashboardPage();
-
+      //  var firstCard = getFirstCardInfo();
+        var balanceFirstCard = dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo());
+        var balanceSecondCard = dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo());
         int amount = 100;
         String cardNumber = DataHelper.getSecondCardInfo().getNumber();
+        var transferOnCard = dashBoardPage.pushFirstCard();
 
-        int balanceFirstCard = dashBoardPage.getFirstCardBalance();
-        int balanceSecondCard = dashBoardPage.getSecondCardBalance();
+        transferOnCard.transfer(String.valueOf(amount), cardNumber);
 
-        dashBoardPage.pushFirstCard();
-        TransferOfFundPage.transfer(String.valueOf(amount), cardNumber);
-
-        assertEquals(balanceFirstCard + amount, dashBoardPage.getFirstCardBalance());
-        assertEquals(balanceSecondCard - amount, dashBoardPage.getSecondCardBalance());
+        assertEquals(balanceFirstCard + amount, dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo()));
+        assertEquals(balanceSecondCard - amount, dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo()));
     }
 
     @Test
     void shouldTransferMoneyInSecondCard() {
         var dashBoardPage = new DashboardPage();
+        var balanceFirstCard = dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo());
+        var balanceSecondCard = dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo());
         int amount = 100;
-        String cardNumber = DataHelper.getFirstCardInfo().getNumber();
+        String cardNumber = getFirstCardInfo().getNumber();
+        var transferOnCard = dashBoardPage.pushSecondCard();
 
-        int balanceFirstCard = dashBoardPage.getFirstCardBalance();
-        int balanceSecondCard = dashBoardPage.getSecondCardBalance();
+        transferOnCard.transfer(String.valueOf(amount), cardNumber);
 
-        dashBoardPage.pushSecondCard();
-
-        TransferOfFundPage.transfer(String.valueOf(amount), cardNumber);
-
-        assertEquals(balanceFirstCard - amount, dashBoardPage.getFirstCardBalance());
-        assertEquals(balanceSecondCard + amount, dashBoardPage.getSecondCardBalance());
+        assertEquals(balanceFirstCard - amount, dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo()));
+        assertEquals(balanceSecondCard + amount, dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo()));
     }
 
     @Test
     void shouldTransferMoneyAmountZero() {
         var dashBoardPage = new DashboardPage();
+        var balanceFirstCard = dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo());
+        var balanceSecondCard = dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo());
         int amount = 0;
-        String cardNumber = DataHelper.getFirstCardInfo().getNumber();
+        String cardNumber = getFirstCardInfo().getNumber();
+        var transferOnCard = dashBoardPage.pushSecondCard();
 
-        int balanceFirstCard = dashBoardPage.getFirstCardBalance();
-        int balanceSecondCard = dashBoardPage.getSecondCardBalance();
+        transferOnCard.transfer(String.valueOf(amount), cardNumber);
 
-        dashBoardPage.pushSecondCard();
-
-        TransferOfFundPage.transfer(String.valueOf(amount), cardNumber);
-
-        assertEquals(balanceFirstCard - amount, dashBoardPage.getFirstCardBalance());
-        assertEquals(balanceSecondCard + amount, dashBoardPage.getSecondCardBalance());
+        assertEquals(balanceFirstCard - amount, dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo()));
+        assertEquals(balanceSecondCard + amount, dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo()));
     }
 
     @Test
     void shouldTransferMoneyMoreAccount() {
         var dashBoardPage = new DashboardPage();
+        var balanceFirstCard = dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo());
+        var balanceSecondCard = dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo());
         int amount = 999999;
-        String cardNumber = DataHelper.getFirstCardInfo().getNumber();
+        String cardNumber = getFirstCardInfo().getNumber();
+        var transferOnCard = dashBoardPage.pushSecondCard();
 
-        int balanceFirstCard = dashBoardPage.getFirstCardBalance();
-        int balanceSecondCard = dashBoardPage.getSecondCardBalance();
+        transferOnCard.transfer(String.valueOf(amount), cardNumber);
 
-        dashBoardPage.pushSecondCard();
-
-        TransferOfFundPage.transfer(String.valueOf(amount), cardNumber);
-
-        assertEquals(balanceFirstCard - amount, dashBoardPage.getFirstCardBalance());
-        assertEquals(balanceSecondCard + amount, dashBoardPage.getSecondCardBalance());
+        assertEquals(balanceFirstCard - amount, dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo()));
+        assertEquals(balanceSecondCard + amount, dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo()));
     }
 
     @Test
     void shouldTransferMoneyNegativeAmount() {
 
         var dashBoardPage = new DashboardPage();
+        var balanceFirstCard = dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo());
+        var balanceSecondCard = dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo());
         int amount = -100;
-        String cardNumber = DataHelper.getFirstCardInfo().getNumber();
+        String cardNumber = getFirstCardInfo().getNumber();
+        var transferOnCard = dashBoardPage.pushSecondCard();
 
-        int balanceFirstCard = dashBoardPage.getFirstCardBalance();
-        int balanceSecondCard = dashBoardPage.getSecondCardBalance();
+        transferOnCard.transfer(String.valueOf(amount), cardNumber);
 
-        dashBoardPage.pushSecondCard();
-
-        TransferOfFundPage.transfer(String.valueOf(amount), cardNumber);
-
-        assertEquals(balanceFirstCard - amount, dashBoardPage.getFirstCardBalance());
-        assertEquals(balanceSecondCard + amount, dashBoardPage.getSecondCardBalance());
+        assertEquals(balanceFirstCard + amount, dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo()));
+        assertEquals(balanceSecondCard - amount, dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo()));
     }
 }

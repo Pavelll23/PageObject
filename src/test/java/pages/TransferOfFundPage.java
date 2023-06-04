@@ -16,11 +16,11 @@ public class TransferOfFundPage {
 
 
 
-   public static void transfer(String amount, String cardFrom){
+   public  TransferOfFundPage transfer(String amount, String cardFrom){
       fieldAmount.setValue(amount);
       fieldFrom.setValue(cardFrom);
       buttonActionTransfer.click();
-     // return new TransferOfFundPage();
+      return new TransferOfFundPage();
    }
 
 
