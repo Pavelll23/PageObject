@@ -79,6 +79,7 @@ public class MoneyTransferTest {
         var transferOnCard = dashBoardPage.pushSecondCard();
 
         transferOnCard.transfer(String.valueOf(amount), cardNumber);
+        transferOnCard.errorMassage("Ошибка");
 
         assertEquals(balanceFirstCard - amount, dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo()));
         assertEquals(balanceSecondCard + amount, dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo()));
