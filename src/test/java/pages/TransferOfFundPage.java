@@ -2,10 +2,6 @@ package pages;
 
 
 import com.codeborne.selenide.SelenideElement;
-import data.DataHelper;
-
-import java.net.HttpCookie;
-
 import static com.codeborne.selenide.Selenide.$;
 
 public class TransferOfFundPage {

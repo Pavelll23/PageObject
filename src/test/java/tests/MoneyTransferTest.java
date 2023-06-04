@@ -1,15 +1,10 @@
 package tests;
 
 import data.DataHelper;
-
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pages.DashboardPage;
 import pages.LoginPage;
-import pages.TransferOfFundPage;
-
 import static com.codeborne.selenide.Selenide.open;
 import static data.DataHelper.getFirstCardInfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MoneyTransferTest {
 
 
-    @BeforeEach
-    void setUp() {
+    @BeforeEach void setUp() {
         open("http://localhost:9999");
         var loginPage = new LoginPage();
 
@@ -33,7 +27,6 @@ public class MoneyTransferTest {
     @Test
     void shouldTransferMoneyInFirstCard() {
         var dashBoardPage = new DashboardPage();
-      //  var firstCard = getFirstCardInfo();
         var balanceFirstCard = dashBoardPage.getCardsBalance(DataHelper.getFirstCardInfo());
         var balanceSecondCard = dashBoardPage.getCardsBalance(DataHelper.getSecondCardInfo());
         int amount = 100;
